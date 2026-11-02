@@ -7,7 +7,7 @@ const metadataBase = new URL(siteUrl);
 export const metadata: Metadata = {
   metadataBase,
   title: {
-    default: "Cohora — Less admin. More teaching.",
+    default: "Cohora - Less admin. More teaching.",
     template: "%s | Cohora",
   },
   description:
@@ -28,27 +28,48 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
   openGraph: {
     type: "website",
     siteName: "Cohora",
-    title: "Cohora — Less admin. More teaching.",
-    description: "A clear workspace for independent tutors to manage students, lessons, homework, and payments.",
+    title: "Cohora - Less admin. More teaching.",
+    description:
+      "A clear workspace for independent tutors to manage students, lessons, homework, and payments.",
     ...(siteUrl ? { url: "/" } : {}),
     ...(siteUrl
-      ? { images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Cohora — Less admin. More teaching." }] }
+      ? {
+          images: [
+            {
+              url: "/opengraph-image",
+              width: 1200,
+              height: 630,
+              alt: "Cohora - Less admin. More teaching.",
+            },
+          ],
+        }
       : {}),
   },
   twitter: {
     card: "summary_large_image",
-    title: "Cohora — Less admin. More teaching.",
-    description: "A clear workspace for independent tutors to manage students, lessons, homework, and payments.",
+    title: "Cohora - Less admin. More teaching.",
+    description:
+      "A clear workspace for independent tutors to manage students, lessons, homework, and payments.",
     ...(siteUrl ? { images: ["/opengraph-image"] } : {}),
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <body>{children}</body>
