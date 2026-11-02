@@ -1,106 +1,57 @@
-import "@/index.css";
-import React from "react";
-import { headers } from "next/headers";
 import type { Metadata } from "next";
-import {
-  defaultLocale,
-  supportedLocales,
-  type SupportedLanguage,
-  protocol,
-  baseDomain,
-} from "config/config";
-import { getDomainForLocale } from "@/utils/domain-utils";
-import { getSeoFor } from "@/config/seo";
-import { Providers } from "./providers";
-import logo from "@/assets/SKYNEX.webp";
+import "@/index.css";
 
-// Removed Press Start 2P and PixelatedElegance for legacy-only port
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cohora.org";
+const metadataBase = new URL(siteUrl);
 
-interface RootLayoutProps {
-  children: React.ReactNode;
-}
+export const metadata: Metadata = {
+  metadataBase,
+  title: {
+    default: "Cohora — Less admin. More teaching.",
+    template: "%s | Cohora",
+  },
+  description:
+    "Cohora is tutoring management software for independent tutors: manage students, lessons, homework, attendance, and payments in one clear workspace.",
+  keywords: [
+    "tutoring management software",
+    "tutor CRM",
+    "tutoring CRM",
+    "lesson management software",
+    "homework management for tutors",
+    "tutor payment tracking",
+  ],
+  authors: [{ name: "Cohora" }],
+  creator: "Cohora",
+  publisher: "Cohora",
+  category: "Education",
+  alternates: siteUrl ? { canonical: "/" } : undefined,
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
+  },
+  openGraph: {
+    type: "website",
+    siteName: "Cohora",
+    title: "Cohora — Less admin. More teaching.",
+    description: "A clear workspace for independent tutors to manage students, lessons, homework, and payments.",
+    ...(siteUrl ? { url: "/" } : {}),
+    ...(siteUrl
+      ? { images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Cohora — Less admin. More teaching." }] }
+      : {}),
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Cohora — Less admin. More teaching.",
+    description: "A clear workspace for independent tutors to manage students, lessons, homework, and payments.",
+    ...(siteUrl ? { images: ["/opengraph-image"] } : {}),
+  },
+};
 
-// Force dynamic rendering to ensure we get the correct language
-export const dynamic = "force-dynamic";
-
-// Localized technical SEO
-export async function generateMetadata(): Promise<Metadata> {
-  const headersList = await headers();
-  const raw = (headersList.get("x-locale") ||
-    defaultLocale) as SupportedLanguage;
-  const locale: SupportedLanguage = supportedLocales.includes(raw)
-    ? raw
-    : defaultLocale;
-  const path = headersList.get("x-pathname") || "/";
-  const seo = getSeoFor(locale, path);
-
-  // Build alternates (hreflang) for the root path
-  const languages: Record<string, string> = {};
-  for (const lang of supportedLocales) {
-    const domain = getDomainForLocale(lang, baseDomain);
-    const absolute = domain.startsWith("http")
-      ? domain
-      : `${protocol}${domain}`;
-    languages[lang] = `${absolute}/`;
-  }
-
-  const canonicalDomain = getDomainForLocale(locale, baseDomain);
-  const canonical = canonicalDomain.startsWith("http")
-    ? canonicalDomain
-    : `${protocol}${canonicalDomain}`;
-
-  const logoSrc =
-    typeof logo === "string" ? logo : (logo as { src: string }).src;
-  const logoUrl = new URL(logoSrc, `${canonical}/`).toString();
-
-  return {
-    metadataBase: new URL(`${protocol}${baseDomain}`),
-    title: seo.title,
-    description: seo.description,
-    keywords: seo.keywords,
-    alternates: {
-      canonical: `${canonical}/`,
-      languages,
-    },
-    openGraph: {
-      title: seo.title,
-      description: seo.description,
-      url: `${canonical}/`,
-      siteName: "Skynex Digital",
-      locale: seo.ogLocale,
-      type: "website",
-      images: [
-        {
-          url: logoUrl,
-          alt: "Skynex Digital",
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: seo.title,
-      description: seo.description,
-      images: [logoUrl],
-    },
-  };
-}
-
-export default async function RootLayout({ children }: RootLayoutProps) {
-  // Get the current locale from headers (middleware sets x-locale)
-  const headersList = await headers();
-  const raw = (headersList.get("x-locale") ||
-    defaultLocale) as SupportedLanguage;
-  const locale: SupportedLanguage = supportedLocales.includes(raw)
-    ? raw
-    : defaultLocale;
-
-  const dir = locale === "il" ? "rtl" : "ltr";
-  const htmlLang = locale === "il" ? "he" : locale;
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang={htmlLang} dir={dir} suppressHydrationWarning>
-      <body suppressHydrationWarning>
-        <Providers>{children}</Providers>
-      </body>
+    <html lang="en">
+      <body>{children}</body>
     </html>
   );
 }
