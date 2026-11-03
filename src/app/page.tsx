@@ -181,7 +181,7 @@ export default function Home() {
         </a>
         <nav aria-label="Main navigation">
           <a href="#how-it-works">How it works</a>
-          <a href="#pricing">Pricing</a>
+          <a href="/pricing">Pricing</a>
           <a href="#faq">FAQ</a>
         </nav>
         <div className="header-actions">
@@ -277,7 +277,7 @@ export default function Home() {
               spreadsheets. You stay in control without building a system around
               yourself.
             </p>
-            <a className="text-link" href="#pricing">
+            <a className="text-link" href="/pricing">
               View pricing <ArrowRight size={16} />
             </a>
           </div>
@@ -429,7 +429,7 @@ export default function Home() {
             <div>
               <span>Product</span>
               <a href="#how-it-works">How it works</a>
-              <a href="#pricing">Pricing</a>
+              <a href="/pricing">Pricing</a>
               <a href="#faq">FAQ</a>
             </div>
             <div>
@@ -445,12 +445,12 @@ export default function Home() {
         </div>
         <div className="container footer-bottom">
           <p>
-            © {new Date().getFullYear()} Cohora. Made for the work that
-            matters.
+            © {new Date().getFullYear()} Cohora. Made for the work that matters.
           </p>
           <div>
             <a href="/privacy">Privacy</a>
             <a href="/terms">Terms</a>
+            <a href="/refunds">Refunds</a>
             <a href="/data-processing-agreement">DPA</a>
           </div>
         </div>

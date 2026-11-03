@@ -226,6 +226,11 @@ h2 {
   letter-spacing: -0.055em;
   line-height: 1.05;
 }
+.legal-effective-date {
+  margin-bottom: 32px !important;
+  color: #66737c;
+  font-size: 13px;
+}
 .legal-document h2 {
   margin-top: 36px;
   color: var(--ink);
@@ -959,6 +964,49 @@ h2 {
   color: #176fd0;
   font-weight: 650;
 }
+.pricing-page-hero {
+  max-width: 760px;
+  padding: 92px 0 54px;
+  text-align: center;
+}
+.pricing-page-hero .eyebrow {
+  color: #147fbc;
+}
+.pricing-page-hero h1 {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(42px, 6vw, 68px);
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+.pricing-page-hero > p:last-child {
+  max-width: 540px;
+  margin: 23px auto 0;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.6;
+}
+.pricing-page-plans {
+  padding-bottom: 114px;
+}
+.pricing-page-grid {
+  margin-top: 0;
+}
+.pricing-note {
+  max-width: 600px;
+  margin: 28px auto 0;
+  color: #66737c;
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: center;
+}
+.pricing-note a {
+  color: #176fd0;
+  font-weight: 650;
+}
+.pricing-footer-bottom {
+  min-height: 74px;
+}
 .faq {
   display: grid;
   grid-template-columns: 0.8fr 1.2fr;
@@ -1154,6 +1202,12 @@ h2 {
   }
   .pricing-section {
     padding: 84px 0 76px;
+  }
+  .pricing-page-hero {
+    padding: 64px 0 39px;
+  }
+  .pricing-page-plans {
+    padding-bottom: 78px;
   }
   .pricing-intro {
     grid-template-columns: 1fr;

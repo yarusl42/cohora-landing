@@ -24,6 +24,10 @@ export const metadata: Metadata = {
   creator: "Cohora",
   publisher: "Cohora",
   category: "Education",
+  icons: {
+    icon: [{ url: "/favicon.ico", type: "image/x-icon", sizes: "32x32" }],
+    shortcut: ["/favicon.ico"],
+  },
   alternates: siteUrl ? { canonical: "/" } : undefined,
   robots: {
     index: true,
