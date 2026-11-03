@@ -38,6 +38,10 @@ const plans = [
   },
 ];
 
+const dashboardUrl = "https://app.cohora.org";
+const signInUrl = `${dashboardUrl}/login`;
+const signupUrl = `${dashboardUrl}/signup/owner`;
+
 export default function PricingPage() {
   return (
     <main>
@@ -47,10 +51,10 @@ export default function PricingPage() {
           <span>Cohora</span>
         </a>
         <div className="header-actions pricing-header-actions">
-          <a className="sign-in" href="#">
+          <a className="sign-in" href={signInUrl}>
             Sign in
           </a>
-          <a className="button button-small" href="#start">
+          <a className="button button-small" href={signupUrl}>
             Start with the free plan <ArrowRight size={15} />
           </a>
         </div>
@@ -89,7 +93,7 @@ export default function PricingPage() {
               </ul>
               <a
                 className={`button${plan.primary ? "" : " button-outline"}`}
-                href="#start"
+                href={signupUrl}
               >
                 {plan.cta} <ArrowRight size={17} />
               </a>
@@ -112,7 +116,7 @@ export default function PricingPage() {
             Give your teaching <em>more room to breathe.</em>
           </h2>
           <p>Start with a workspace that understands independent tutoring.</p>
-          <a className="button light-button" href="#">
+          <a className="button light-button" href={signupUrl}>
             <span>Start with the free plan</span> <ArrowRight size={17} />
           </a>
         </div>

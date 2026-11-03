@@ -166,6 +166,10 @@ function ProductPreview() {
 }
 
 export default function Home() {
+  const dashboardUrl = "https://app.cohora.org";
+  const signInUrl = `${dashboardUrl}/login`;
+  const signupUrl = `${dashboardUrl}/signup/owner`;
+
   return (
     <main>
       <script
@@ -185,10 +189,10 @@ export default function Home() {
           <a href="#faq">FAQ</a>
         </nav>
         <div className="header-actions">
-          <a className="sign-in" href="#">
+          <a className="sign-in" href={signInUrl}>
             Sign in
           </a>
-          <a className="button button-small" href="#start">
+          <a className="button button-small" href={signupUrl}>
             Start with the free plan <ArrowRight size={15} />
           </a>
         </div>
@@ -213,7 +217,7 @@ export default function Home() {
             clear workspace - so your practice feels easier to run.
           </p>
           <div className="hero-actions">
-            <a className="button" href="#start">
+            <a className="button" href={signupUrl}>
               Start with the free plan <ArrowRight size={17} />
             </a>
             <a className="text-link" href="#how-it-works">
@@ -346,7 +350,7 @@ export default function Home() {
                 <Check size={16} /> Payment requests and income tracking
               </li>
             </ul>
-            <a className="button" href="#start">
+            <a className="button" href={signupUrl}>
               Free plan <ArrowRight size={17} />
             </a>
           </article>
@@ -370,7 +374,7 @@ export default function Home() {
                 <Check size={16} /> The same focused solo-tutor experience
               </li>
             </ul>
-            <a className="button button-outline" href="#start">
+            <a className="button button-outline" href={signupUrl}>
               Choose Tutor Pro <ArrowRight size={17} />
             </a>
           </article>
@@ -407,7 +411,7 @@ export default function Home() {
             <em>more room to breathe.</em>
           </h2>
           <p>Start with a workspace that understands independent tutoring.</p>
-          <a className="button light-button" href="#">
+          <a className="button light-button" href={signupUrl}>
             <span>Start with the free plan</span> <ArrowRight size={17} />
           </a>
         </div>
@@ -438,8 +442,8 @@ export default function Home() {
             </div>
             <div>
               <span>Account</span>
-              <a href="#">Sign in</a>
-              <a href="#start">Start with the free plan</a>
+              <a href={signInUrl}>Sign in</a>
+              <a href={signupUrl}>Start with the free plan</a>
             </div>
           </div>
         </div>
