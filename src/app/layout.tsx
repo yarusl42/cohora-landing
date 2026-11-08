@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "@/index.css";
+import MixpanelTracker from "@/components/MixpanelTracker";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cohora.org";
 const metadataBase = new URL(siteUrl);
@@ -76,7 +77,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <MixpanelTracker />
+        {children}
+      </body>
     </html>
   );
 }

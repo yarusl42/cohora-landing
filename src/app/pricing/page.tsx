@@ -1,5 +1,6 @@
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
+import { PricingCards } from "@/components/PricingCards";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -7,42 +8,13 @@ export const metadata: Metadata = {
   alternates: { canonical: "/pricing" },
 };
 
-const plans = [
-  {
-    label: "Start here",
-    name: "Free Tutor",
-    audience: "For independent tutors starting out.",
-    price: "$0",
-    capacity: "Up to 10 student places",
-    features: [
-      "Core CRM and student management",
-      "Lessons, homework, and leads",
-      "Payment requests and income tracking",
-    ],
-    cta: "Start with Free Tutor",
-    primary: true,
-  },
-  {
-    label: "More capacity",
-    name: "Tutor Pro",
-    audience: "For an established solo tutor.",
-    price: "$12",
-    capacity: "Up to 50 student places",
-    features: [
-      "Everything in Free Tutor",
-      "More room for your students",
-      "The same focused solo-tutor experience",
-    ],
-    cta: "Choose Tutor Pro",
-    primary: false,
-  },
-];
-
 const dashboardUrl = "https://app.cohora.org";
 const signInUrl = `${dashboardUrl}/login`;
 const signupUrl = `${dashboardUrl}/signup/owner`;
 
 export default function PricingPage() {
+  const showFuturePlans = process.env.NODE_ENV === "development";
+
   return (
     <main>
       <header className="site-header container">
@@ -70,35 +42,11 @@ export default function PricingPage() {
       </section>
 
       <section className="pricing-page-plans container" aria-label="Plans">
-        <div className="pricing-grid pricing-page-grid">
-          {plans.map((plan) => (
-            <article
-              className={`price-card${plan.primary ? " price-card-primary" : ""}`}
-              key={plan.name}
-            >
-              <p className="plan-label">{plan.label}</p>
-              <h2>{plan.name}</h2>
-              <p className="plan-for">{plan.audience}</p>
-              <p className="price">
-                <strong>{plan.price}</strong>
-                <span>/month</span>
-              </p>
-              <p className="capacity">{plan.capacity}</p>
-              <ul>
-                {plan.features.map((feature) => (
-                  <li key={feature}>
-                    <Check size={16} /> {feature}
-                  </li>
-                ))}
-              </ul>
-              <a
-                className={`button${plan.primary ? "" : " button-outline"}`}
-                href={signupUrl}
-              >
-                {plan.cta} <ArrowRight size={17} />
-              </a>
-            </article>
-          ))}
+        <div className="pricing-page-grid">
+          <PricingCards
+            signupUrl={signupUrl}
+            showFuturePlans={showFuturePlans}
+          />
         </div>
         <p className="pricing-note">
           Tutor Pro is billed monthly in advance. Cancel any time before your
@@ -106,7 +54,8 @@ export default function PricingPage() {
           billing period. See our <a href="/refunds">Refund Policy</a>.
         </p>
         <p className="enterprise-line">
-          Growing beyond a solo practice? <a href="#start">Talk to us.</a>
+          Growing beyond a solo practice?{" "}
+          <a href="mailto:sales@cohora.org">Talk to us.</a>
         </p>
       </section>
 

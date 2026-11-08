@@ -860,6 +860,34 @@ h2 {
   max-width: 870px;
   margin: 50px auto 0;
 }
+.pricing-interval {
+  display: flex;
+  width: fit-content;
+  margin: 32px auto 0;
+  padding: 4px;
+  border: 1px solid #dce4e5;
+  border-radius: 999px;
+  background: #f7fafb;
+}
+.pricing-interval button {
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 15px;
+  background: transparent;
+  color: #63717c;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.pricing-interval button.active {
+  background: #fff;
+  color: var(--ink);
+  font-weight: 650;
+  box-shadow: 0 1px 3px rgba(25, 42, 53, 0.14);
+}
+.pricing-interval + .pricing-grid {
+  margin-top: 20px;
+}
 .price-card {
   display: flex;
   min-height: 470px;
@@ -914,6 +942,12 @@ h2 {
   margin-left: 5px;
   color: #66737c;
   font-size: 13px;
+}
+.annual-billing-note {
+  min-height: 19px;
+  margin: -4px 0 10px;
+  color: #66737c;
+  font-size: 12px;
 }
 .capacity {
   margin: 0;

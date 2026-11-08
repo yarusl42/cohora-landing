@@ -72,6 +72,8 @@ jobs:
           file: Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.landing-image }}
+          build-args: |
+            NEXT_PUBLIC_MIXPANEL_TOKEN=${{ vars.NEXT_PUBLIC_MIXPANEL_TOKEN }}
           cache-from: type=gha,scope=landing
           cache-to: type=gha,mode=max,scope=landing
 

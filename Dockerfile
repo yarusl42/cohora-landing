@@ -2,10 +2,13 @@ FROM node:22-alpine AS build
 
 WORKDIR /app
 
+ARG NEXT_PUBLIC_MIXPANEL_TOKEN
+
 COPY package.json package-lock.json ./
 RUN npm ci
 
 COPY . .
+ENV NEXT_PUBLIC_MIXPANEL_TOKEN=$NEXT_PUBLIC_MIXPANEL_TOKEN
 RUN npm run build
 
 FROM node:22-alpine AS runtime
