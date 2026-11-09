@@ -19,7 +19,10 @@ const initialize = () => {
   initialized = true;
 };
 
-export const trackLandingEvent = (event: string, properties: Record<string, string> = {}) => {
+export const trackLandingEvent = (
+  event: string,
+  properties: Record<string, string> = {},
+) => {
   initialize();
   if (initialized) {
     mixpanel.track(event, properties);

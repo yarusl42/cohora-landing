@@ -110,7 +110,9 @@ export function PricingCards({
           className={interval === "monthly" ? "active" : ""}
           onClick={() => {
             setInterval("monthly");
-            trackLandingEvent("Landing billing interval selected", { interval: "monthly" });
+            trackLandingEvent("Landing billing interval selected", {
+              interval: "monthly",
+            });
           }}
         >
           Monthly
@@ -120,7 +122,9 @@ export function PricingCards({
           className={interval === "yearly" ? "active" : ""}
           onClick={() => {
             setInterval("yearly");
-            trackLandingEvent("Landing billing interval selected", { interval: "yearly" });
+            trackLandingEvent("Landing billing interval selected", {
+              interval: "yearly",
+            });
           }}
         >
           Yearly
@@ -169,10 +173,15 @@ export function PricingCards({
                 className={`button${plan.primary ? "" : " button-outline"}`}
                 href={plan.enterprise ? "mailto:sales@cohora.org" : signupUrl}
                 onClick={() =>
-                  trackLandingEvent(plan.enterprise ? "Landing sales contacted" : "Landing plan selected", {
-                    plan: plan.name,
-                    interval,
-                  })
+                  trackLandingEvent(
+                    plan.enterprise
+                      ? "Landing sales contacted"
+                      : "Landing plan selected",
+                    {
+                      plan: plan.name,
+                      interval,
+                    },
+                  )
                 }
               >
                 {plan.cta} {!plan.enterprise ? <ArrowRight size={17} /> : null}
