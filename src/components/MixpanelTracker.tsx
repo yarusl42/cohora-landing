@@ -5,10 +5,39 @@ import mixpanel from "mixpanel-browser";
 import { usePathname } from "next/navigation";
 
 const token = process.env.NEXT_PUBLIC_MIXPANEL_TOKEN;
+const isMockAnalytics = process.env.NODE_ENV !== "production";
 let initialized = false;
 
+type MockLandingEvent = {
+  event: string;
+  properties: Record<string, string>;
+  timestamp: string;
+};
+
+declare global {
+  interface Window {
+    __COHORA_MIXPANEL_EVENTS__?: MockLandingEvent[];
+  }
+}
+
+const recordMockEvent = (event: string, properties: Record<string, string>) => {
+  window.__COHORA_MIXPANEL_EVENTS__ ??= [];
+  window.__COHORA_MIXPANEL_EVENTS__.push({
+    event,
+    properties,
+    timestamp: new Date().toISOString(),
+  });
+};
+
 const initialize = () => {
-  if (initialized || !token) {
+  if (initialized || (!isMockAnalytics && !token)) {
+    return;
+  }
+  if (isMockAnalytics) {
+    initialized = true;
+    return;
+  }
+  if (!token) {
     return;
   }
   mixpanel.init(token, {
@@ -25,6 +54,10 @@ export const trackLandingEvent = (
 ) => {
   initialize();
   if (initialized) {
+    if (isMockAnalytics) {
+      recordMockEvent(event, properties);
+      return;
+    }
     mixpanel.track(event, properties);
   }
 };
