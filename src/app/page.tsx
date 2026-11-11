@@ -9,6 +9,7 @@ import {
   MessageSquareText,
   UsersRound,
 } from "lucide-react";
+import { PricingCards } from "@/components/PricingCards";
 
 const benefits = [
   {
@@ -169,6 +170,7 @@ export default function Home() {
   const dashboardUrl = "https://app.cohora.org";
   const signInUrl = `${dashboardUrl}/login`;
   const signupUrl = `${dashboardUrl}/signup/owner`;
+  const showFuturePlans = process.env.NODE_ENV === "development";
 
   return (
     <main>
@@ -329,58 +331,10 @@ export default function Home() {
             the work clear and focused.
           </p>
         </div>
-        <div className="pricing-grid">
-          <article className="price-card price-card-primary">
-            <p className="plan-label">Start here</p>
-            <h3>Free Tutor</h3>
-            <p className="plan-for">For independent tutors starting out.</p>
-            <p className="price">
-              <strong>$0</strong>
-              <span>/month</span>
-            </p>
-            <p className="capacity">Up to 10 student places</p>
-            <ul>
-              <li>
-                <Check size={16} /> Core CRM and student management
-              </li>
-              <li>
-                <Check size={16} /> Lessons, homework, and leads
-              </li>
-              <li>
-                <Check size={16} /> Payment requests and income tracking
-              </li>
-            </ul>
-            <a className="button" href={signupUrl}>
-              Free plan <ArrowRight size={17} />
-            </a>
-          </article>
-          <article className="price-card">
-            <p className="plan-label">More capacity</p>
-            <h3>Tutor Pro</h3>
-            <p className="plan-for">For an established solo tutor.</p>
-            <p className="price">
-              <strong>$12</strong>
-              <span>/month</span>
-            </p>
-            <p className="capacity">Up to 50 student places</p>
-            <ul>
-              <li>
-                <Check size={16} /> Everything in Free Tutor
-              </li>
-              <li>
-                <Check size={16} /> More room for your students
-              </li>
-              <li>
-                <Check size={16} /> The same focused solo-tutor experience
-              </li>
-            </ul>
-            <a className="button button-outline" href={signupUrl}>
-              Choose Tutor Pro <ArrowRight size={17} />
-            </a>
-          </article>
-        </div>
+        <PricingCards signupUrl={signupUrl} showFuturePlans={showFuturePlans} />
         <p className="enterprise-line">
-          Growing beyond a solo practice? <a href="#start">Talk to us.</a>
+          Growing beyond a solo practice?{" "}
+          <a href="mailto:sales@cohora.org">Talk to us.</a>
         </p>
       </section>
 
@@ -438,7 +392,7 @@ export default function Home() {
             </div>
             <div>
               <span>Enterprise</span>
-              <a href="#start">Talk to us</a>
+              <a href="mailto:sales@cohora.org">Talk to us</a>
             </div>
             <div>
               <span>Account</span>
