@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
 import { trackLandingEvent } from "@/components/MixpanelTracker";
+import { SignupLink } from "@/components/SignupLink";
 
 type PricingCardsProps = {
-  signupUrl: string;
   showFuturePlans: boolean;
 };
 
@@ -94,7 +94,6 @@ const plans = [
 ];
 
 export function PricingCards({
-  signupUrl,
   showFuturePlans,
 }: PricingCardsProps) {
   const [interval, setInterval] = useState<"monthly" | "yearly">("yearly");
@@ -169,26 +168,28 @@ export function PricingCards({
                   </li>
                 ))}
               </ul>
-              <a
-                className={`button${plan.primary ? "" : " button-outline"}`}
-                href={plan.enterprise ? "mailto:sales@cohora.org" : signupUrl}
-                {...(!plan.enterprise
-                  ? { rel: "noreferrer", target: "_blank" }
-                  : {})}
-                onClick={() =>
-                  trackLandingEvent(
-                    plan.enterprise
-                      ? "Landing sales contacted"
-                      : "Landing plan selected",
-                    {
-                      plan: plan.name,
-                      interval,
-                    },
-                  )
-                }
-              >
-                {plan.cta} {!plan.enterprise ? <ArrowRight size={17} /> : null}
-              </a>
+              {plan.enterprise ? (
+                <a
+                  className={`button${plan.primary ? "" : " button-outline"}`}
+                  href="mailto:sales@cohora.org"
+                  onClick={() =>
+                    trackLandingEvent("Landing sales contacted", { plan: plan.name, interval })
+                  }
+                >
+                  {plan.cta}
+                </a>
+              ) : (
+                <SignupLink
+                  className={`button${plan.primary ? "" : " button-outline"}`}
+                  rel="noreferrer"
+                  target="_blank"
+                  onClick={() =>
+                    trackLandingEvent("Landing plan selected", { plan: plan.name, interval })
+                  }
+                >
+                  {plan.cta} <ArrowRight size={17} />
+                </SignupLink>
+              )}
             </article>
           );
         })}

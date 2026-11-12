@@ -9,8 +9,9 @@ import {
   UsersRound,
 } from "lucide-react";
 import { PricingCards } from "@/components/PricingCards";
+import { SignupLink } from "@/components/SignupLink";
 import { SiteHeader } from "@/components/SiteHeader";
-import { signInUrl, signupUrl } from "@/config/dashboard";
+import { signInUrl } from "@/config/dashboard";
 
 const benefits = [
   {
@@ -196,14 +197,13 @@ export default function Home() {
             clear workspace - so your practice feels easier to run.
           </p>
           <div className="hero-actions">
-            <a
+            <SignupLink
               className="button"
-              href={signupUrl}
               rel="noreferrer"
               target="_blank"
             >
               Start with the free plan <ArrowRight size={17} />
-            </a>
+            </SignupLink>
             <a className="text-link" href="#how-it-works">
               See how it works <span>↓</span>
             </a>
@@ -313,7 +313,7 @@ export default function Home() {
             the work clear and focused.
           </p>
         </div>
-        <PricingCards signupUrl={signupUrl} showFuturePlans={showFuturePlans} />
+        <PricingCards showFuturePlans={showFuturePlans} />
         <p className="enterprise-line">
           Growing beyond a solo practice?{" "}
           <a href="mailto:sales@cohora.org">Talk to us.</a>
@@ -347,14 +347,13 @@ export default function Home() {
             <em>more room to breathe.</em>
           </h2>
           <p>Start with a workspace that understands independent tutoring.</p>
-          <a
+          <SignupLink
             className="button light-button"
-            href={signupUrl}
             rel="noreferrer"
             target="_blank"
           >
             <span>Start with the free plan</span> <ArrowRight size={17} />
-          </a>
+          </SignupLink>
         </div>
       </section>
 
@@ -386,9 +385,9 @@ export default function Home() {
               <a href={signInUrl} rel="noreferrer" target="_blank">
                 Sign in
               </a>
-              <a href={signupUrl} rel="noreferrer" target="_blank">
+              <SignupLink rel="noreferrer" target="_blank">
                 Start with the free plan
-              </a>
+              </SignupLink>
             </div>
           </div>
         </div>

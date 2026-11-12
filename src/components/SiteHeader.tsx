@@ -2,7 +2,8 @@
 
 import { ArrowRight, Menu, X } from "lucide-react";
 import { useEffect, useId, useState } from "react";
-import { signInUrl, signupUrl } from "@/config/dashboard";
+import { signInUrl } from "@/config/dashboard";
+import { SignupLink } from "@/components/SignupLink";
 
 type SiteHeaderProps = {
   page?: "home" | "pricing";
@@ -67,14 +68,13 @@ export function SiteHeader({ page = "home" }: SiteHeaderProps) {
         >
           Log in
         </a>
-        <a
+        <SignupLink
           className="button button-small"
-          href={signupUrl}
           rel="noreferrer"
           target="_blank"
         >
           Start with the free plan <ArrowRight size={15} />
-        </a>
+        </SignupLink>
       </div>
       <button
         aria-controls={menuId}
@@ -104,15 +104,14 @@ export function SiteHeader({ page = "home" }: SiteHeaderProps) {
           >
             Log in
           </a>
-          <a
+          <SignupLink
             className="button"
-            href={signupUrl}
             rel="noreferrer"
             target="_blank"
             onClick={closeMenu}
           >
             Start with the free plan <ArrowRight size={17} />
-          </a>
+          </SignupLink>
         </div>
       </div>
     </header>

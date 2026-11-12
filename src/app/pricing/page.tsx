@@ -1,8 +1,8 @@
 import { ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
 import { PricingCards } from "@/components/PricingCards";
+import { SignupLink } from "@/components/SignupLink";
 import { SiteHeader } from "@/components/SiteHeader";
-import { signupUrl } from "@/config/dashboard";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -28,10 +28,7 @@ export default function PricingPage() {
 
       <section className="pricing-page-plans container" aria-label="Plans">
         <div className="pricing-page-grid">
-          <PricingCards
-            signupUrl={signupUrl}
-            showFuturePlans={showFuturePlans}
-          />
+          <PricingCards showFuturePlans={showFuturePlans} />
         </div>
         <p className="pricing-note">
           Tutor Pro is billed monthly in advance. Cancel any time before your
@@ -50,14 +47,13 @@ export default function PricingPage() {
             Give your teaching <em>more room to breathe.</em>
           </h2>
           <p>Start with a workspace that understands independent tutoring.</p>
-          <a
+          <SignupLink
             className="button light-button"
-            href={signupUrl}
             rel="noreferrer"
             target="_blank"
           >
             <span>Start with the free plan</span> <ArrowRight size={17} />
-          </a>
+          </SignupLink>
         </div>
       </section>
 
