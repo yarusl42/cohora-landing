@@ -172,6 +172,9 @@ export function PricingCards({
               <a
                 className={`button${plan.primary ? "" : " button-outline"}`}
                 href={plan.enterprise ? "mailto:sales@cohora.org" : signupUrl}
+                {...(!plan.enterprise
+                  ? { rel: "noreferrer", target: "_blank" }
+                  : {})}
                 onClick={() =>
                   trackLandingEvent(
                     plan.enterprise

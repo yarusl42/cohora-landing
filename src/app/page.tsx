@@ -5,11 +5,12 @@ import {
   CircleDollarSign,
   Clock3,
   GraduationCap,
-  Menu,
   MessageSquareText,
   UsersRound,
 } from "lucide-react";
 import { PricingCards } from "@/components/PricingCards";
+import { SiteHeader } from "@/components/SiteHeader";
+import { signInUrl, signupUrl } from "@/config/dashboard";
 
 const benefits = [
   {
@@ -167,9 +168,6 @@ function ProductPreview() {
 }
 
 export default function Home() {
-  const dashboardUrl = "https://app.cohora.org";
-  const signInUrl = `${dashboardUrl}/login`;
-  const signupUrl = `${dashboardUrl}/signup/owner`;
   const showFuturePlans = process.env.NODE_ENV === "development";
 
   return (
@@ -180,28 +178,7 @@ export default function Home() {
           __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
         }}
       />
-      <header className="site-header container">
-        <a href="#top" className="brand" aria-label="Cohora home">
-          <img src="/logo.png" alt="" />
-          <span>Cohora</span>
-        </a>
-        <nav aria-label="Main navigation">
-          <a href="#how-it-works">How it works</a>
-          <a href="/pricing">Pricing</a>
-          <a href="#faq">FAQ</a>
-        </nav>
-        <div className="header-actions">
-          <a className="sign-in" href={signInUrl}>
-            Sign in
-          </a>
-          <a className="button button-small" href={signupUrl}>
-            Start with the free plan <ArrowRight size={15} />
-          </a>
-        </div>
-        <button className="menu-button" aria-label="Open menu">
-          <Menu size={21} />
-        </button>
-      </header>
+      <SiteHeader />
 
       <section className="hero container" id="top">
         <div className="hero-copy">
@@ -219,7 +196,12 @@ export default function Home() {
             clear workspace - so your practice feels easier to run.
           </p>
           <div className="hero-actions">
-            <a className="button" href={signupUrl}>
+            <a
+              className="button"
+              href={signupUrl}
+              rel="noreferrer"
+              target="_blank"
+            >
               Start with the free plan <ArrowRight size={17} />
             </a>
             <a className="text-link" href="#how-it-works">
@@ -365,7 +347,12 @@ export default function Home() {
             <em>more room to breathe.</em>
           </h2>
           <p>Start with a workspace that understands independent tutoring.</p>
-          <a className="button light-button" href={signupUrl}>
+          <a
+            className="button light-button"
+            href={signupUrl}
+            rel="noreferrer"
+            target="_blank"
+          >
             <span>Start with the free plan</span> <ArrowRight size={17} />
           </a>
         </div>
@@ -396,8 +383,12 @@ export default function Home() {
             </div>
             <div>
               <span>Account</span>
-              <a href={signInUrl}>Sign in</a>
-              <a href={signupUrl}>Start with the free plan</a>
+              <a href={signInUrl} rel="noreferrer" target="_blank">
+                Sign in
+              </a>
+              <a href={signupUrl} rel="noreferrer" target="_blank">
+                Start with the free plan
+              </a>
             </div>
           </div>
         </div>

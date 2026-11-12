@@ -3,14 +3,19 @@ import type * as SentryModule from "@sentry/nextjs";
 type Sentry = typeof SentryModule;
 type RouterTransitionStart = typeof SentryModule.captureRouterTransitionStart;
 type IdleCapableWindow = {
-  requestIdleCallback?: (callback: () => void, options: { timeout: number }) => number;
+  requestIdleCallback?: (
+    callback: () => void,
+    options: { timeout: number },
+  ) => number;
 };
 
 let sentryPromise: Promise<Sentry> | undefined;
 
 const loadSentry = () => {
   if (!process.env.NEXT_PUBLIC_SENTRY_DSN) {
-    return Promise.reject(new Error("NEXT_PUBLIC_SENTRY_DSN is not configured"));
+    return Promise.reject(
+      new Error("NEXT_PUBLIC_SENTRY_DSN is not configured"),
+    );
   }
 
   sentryPromise ??= import("@sentry/nextjs").then((Sentry) => {
@@ -42,7 +47,8 @@ if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_SENTRY_DSN) {
     void loadSentry().catch(() => undefined);
   };
 
-  const requestIdleCallback = (window as unknown as IdleCapableWindow).requestIdleCallback;
+  const requestIdleCallback = (window as unknown as IdleCapableWindow)
+    .requestIdleCallback;
   if (requestIdleCallback) {
     requestIdleCallback(initializeWhenIdle, { timeout: 3_000 });
   } else {

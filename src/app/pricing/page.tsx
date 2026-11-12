@@ -1,6 +1,8 @@
 import { ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
 import { PricingCards } from "@/components/PricingCards";
+import { SiteHeader } from "@/components/SiteHeader";
+import { signupUrl } from "@/config/dashboard";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -8,29 +10,12 @@ export const metadata: Metadata = {
   alternates: { canonical: "/pricing" },
 };
 
-const dashboardUrl = "https://app.cohora.org";
-const signInUrl = `${dashboardUrl}/login`;
-const signupUrl = `${dashboardUrl}/signup/owner`;
-
 export default function PricingPage() {
   const showFuturePlans = process.env.NODE_ENV === "development";
 
   return (
     <main>
-      <header className="site-header container">
-        <a href="/" className="brand" aria-label="Cohora home">
-          <img src="/logo.png" alt="" />
-          <span>Cohora</span>
-        </a>
-        <div className="header-actions pricing-header-actions">
-          <a className="sign-in" href={signInUrl}>
-            Sign in
-          </a>
-          <a className="button button-small" href={signupUrl}>
-            Start with the free plan <ArrowRight size={15} />
-          </a>
-        </div>
-      </header>
+      <SiteHeader page="pricing" />
 
       <section className="pricing-page-hero container">
         <p className="eyebrow">Simple pricing for solo tutors</p>
@@ -65,7 +50,12 @@ export default function PricingPage() {
             Give your teaching <em>more room to breathe.</em>
           </h2>
           <p>Start with a workspace that understands independent tutoring.</p>
-          <a className="button light-button" href={signupUrl}>
+          <a
+            className="button light-button"
+            href={signupUrl}
+            rel="noreferrer"
+            target="_blank"
+          >
             <span>Start with the free plan</span> <ArrowRight size={17} />
           </a>
         </div>
