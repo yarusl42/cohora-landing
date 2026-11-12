@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
-import mixpanel from "mixpanel-browser";
 import { usePathname } from "next/navigation";
 
 const token = process.env.NEXT_PUBLIC_MIXPANEL_TOKEN;
+const apiHost = "https://api-eu.mixpanel.com";
 const isMockAnalytics = process.env.NODE_ENV !== "production";
-let initialized = false;
+const distinctIdStorageKey = "cohora_mixpanel_distinct_id";
 
 type MockLandingEvent = {
   event: string;
@@ -29,45 +29,52 @@ const recordMockEvent = (event: string, properties: Record<string, string>) => {
   });
 };
 
-const initialize = () => {
-  if (initialized || (!isMockAnalytics && !token)) {
-    return;
+const createDistinctId = () =>
+  typeof crypto?.randomUUID === "function"
+    ? crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+const getDistinctId = () => {
+  const stored = localStorage.getItem(distinctIdStorageKey);
+  if (stored) {
+    return stored;
   }
-  if (isMockAnalytics) {
-    initialized = true;
-    return;
-  }
-  if (!token) {
-    return;
-  }
-  mixpanel.init(token, {
-    autocapture: false,
-    track_pageview: false,
-    persistence: "localStorage",
-  });
-  initialized = true;
+  const distinctId = createDistinctId();
+  localStorage.setItem(distinctIdStorageKey, distinctId);
+  return distinctId;
 };
 
 export const trackLandingEvent = (
   event: string,
   properties: Record<string, string> = {},
 ) => {
-  initialize();
-  if (initialized) {
-    if (isMockAnalytics) {
-      recordMockEvent(event, properties);
-      return;
-    }
-    mixpanel.track(event, properties);
+  if (isMockAnalytics) {
+    recordMockEvent(event, properties);
+    return;
   }
+  if (!token) {
+    return;
+  }
+  void fetch(`${apiHost}/track`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify([
+      {
+        event,
+        properties: {
+          token,
+          distinct_id: getDistinctId(),
+          time: Date.now(),
+          ...properties,
+        },
+      },
+    ]),
+    keepalive: true,
+  }).catch(() => {});
 };
 
 export default function MixpanelTracker() {
   const pathname = usePathname();
-
-  useEffect(() => {
-    initialize();
-  }, []);
 
   useEffect(() => {
     trackLandingEvent("Landing page viewed", { path: pathname });

@@ -1,4 +1,9 @@
+import bundleAnalyzer from "@next/bundle-analyzer";
 import { withSentryConfig } from "@sentry/nextjs/config";
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: globalThis.process.env.ANALYZE === "true",
+});
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -8,8 +13,10 @@ const nextConfig = {
   },
 };
 
-export default withSentryConfig(nextConfig, {
-  silent: true,
-  org: "cohora",
-  project: "landing",
-});
+export default withBundleAnalyzer(
+  withSentryConfig(nextConfig, {
+    silent: true,
+    org: "cohora",
+    project: "landing",
+  }),
+);
