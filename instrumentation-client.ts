@@ -1,4 +1,9 @@
 import type * as SentryModule from "@sentry/nextjs";
+import {
+  consentChangedEvent,
+  consentGrantedEvent,
+  getConsentChoice,
+} from "@/config/consent";
 
 type Sentry = typeof SentryModule;
 type RouterTransitionStart = typeof SentryModule.captureRouterTransitionStart;
@@ -35,13 +40,26 @@ const reportBrowserError = (error: unknown) => {
     .catch(() => undefined);
 };
 
-if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_SENTRY_DSN) {
-  window.addEventListener("error", (event) => {
-    reportBrowserError(event.error ?? new Error(event.message));
-  });
-  window.addEventListener("unhandledrejection", (event) => {
-    reportBrowserError(event.reason);
-  });
+let sentryInitialized = false;
+const handleBrowserError = (event: ErrorEvent) => {
+  reportBrowserError(event.error ?? new Error(event.message));
+};
+const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
+  reportBrowserError(event.reason);
+};
+
+const initializeSentry = () => {
+  if (
+    sentryInitialized ||
+    !process.env.NEXT_PUBLIC_SENTRY_DSN ||
+    getConsentChoice() !== "accepted"
+  ) {
+    return;
+  }
+
+  sentryInitialized = true;
+  window.addEventListener("error", handleBrowserError);
+  window.addEventListener("unhandledrejection", handleUnhandledRejection);
 
   const initializeWhenIdle = () => {
     void loadSentry().catch(() => undefined);
@@ -54,9 +72,34 @@ if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_SENTRY_DSN) {
   } else {
     window.setTimeout(initializeWhenIdle, 1_000);
   }
+};
+
+const updateSentryConsent = () => {
+  if (getConsentChoice() === "accepted") {
+    initializeSentry();
+    return;
+  }
+
+  sentryInitialized = false;
+  window.removeEventListener("error", handleBrowserError);
+  window.removeEventListener("unhandledrejection", handleUnhandledRejection);
+  void sentryPromise
+    ?.then((Sentry) => Sentry.close())
+    .then(() => {
+      sentryPromise = undefined;
+    })
+    .catch(() => undefined);
+};
+
+if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_SENTRY_DSN) {
+  initializeSentry();
+  window.addEventListener(consentGrantedEvent, initializeSentry);
+  window.addEventListener(consentChangedEvent, updateSentryConsent);
 }
 
 export const onRouterTransitionStart: RouterTransitionStart = (...args) => {
+  if (getConsentChoice() !== "accepted") return;
+
   void loadSentry()
     .then((Sentry) => Sentry.captureRouterTransitionStart(...args))
     .catch(() => undefined);

@@ -19,7 +19,7 @@ export default function PrivacyPage() {
       <div className="legal-document">
         <h1 className="mb-4 text-3xl font-bold">Privacy Policy</h1>
         <p className="mb-8 text-sm text-muted-foreground">
-          Effective Date: October 16, 2026 · Last Updated: October 16, 2026
+          Effective Date: November 13, 2026 · Last Updated: November 13, 2026
         </p>
 
         <section className="mb-8 space-y-3">
@@ -241,19 +241,25 @@ export default function PrivacyPage() {
             6. Cookies and Similar Technologies
           </h2>
           <p>
-            We may use cookies, local storage, and similar technologies for
-            authentication, maintaining sessions, remembering preferences,
-            protecting accounts, and understanding Service performance.
+            We use local storage and similar technologies on our website. We use
+            necessary storage to remember your cookie preference. This is
+            retained for up to six months unless you change it.
           </p>
           <p>
-            Where optional analytics or tracking technologies are used, we will
-            provide applicable disclosures and obtain consent where required by
-            law.
+            With your consent, we use Mixpanel to understand website usage, such
+            as pages viewed and interactions with our site. Mixpanel uses a
+            randomly generated identifier stored locally in your browser to
+            distinguish visits.
           </p>
           <p>
-            Users may manage certain technologies through their browser
-            settings. Disabling essential storage mechanisms may affect Service
-            functionality.
+            With your consent, we also use Sentry to receive browser error and
+            diagnostic information so that we can identify and fix reliability
+            issues. We do not activate these optional technologies until you
+            make a choice through our cookie banner.
+          </p>
+          <p>
+            You can accept or decline optional technologies when the banner is
+            shown. Browser settings may also let you manage local storage.
           </p>
         </section>
 
@@ -272,7 +278,12 @@ export default function PrivacyPage() {
             <li>Email delivery and communications</li>
             <li>Authentication and security services</li>
             <li>Payment processing</li>
-            <li>Error monitoring and analytics</li>
+            <li>
+              Analytics provided by Mixpanel, where you have given consent
+            </li>
+            <li>
+              Error monitoring provided by Sentry, where you have given consent
+            </li>
             <li>Technical support infrastructure</li>
           </ul>
           <p>

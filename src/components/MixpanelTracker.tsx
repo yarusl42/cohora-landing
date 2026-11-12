@@ -2,11 +2,15 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import {
+  consentGrantedEvent,
+  getConsentChoice,
+  mixpanelDistinctIdStorageKey,
+} from "@/config/consent";
 
 const token = process.env.NEXT_PUBLIC_MIXPANEL_TOKEN;
 const apiHost = "https://api-eu.mixpanel.com";
 const isMockAnalytics = process.env.NODE_ENV !== "production";
-const distinctIdStorageKey = "cohora_mixpanel_distinct_id";
 
 type MockLandingEvent = {
   event: string;
@@ -35,12 +39,12 @@ const createDistinctId = () =>
     : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
 const getDistinctId = () => {
-  const stored = localStorage.getItem(distinctIdStorageKey);
+  const stored = localStorage.getItem(mixpanelDistinctIdStorageKey);
   if (stored) {
     return stored;
   }
   const distinctId = createDistinctId();
-  localStorage.setItem(distinctIdStorageKey, distinctId);
+  localStorage.setItem(mixpanelDistinctIdStorageKey, distinctId);
   return distinctId;
 };
 
@@ -48,6 +52,9 @@ export const trackLandingEvent = (
   event: string,
   properties: Record<string, string> = {},
 ) => {
+  if (getConsentChoice() !== "accepted") {
+    return;
+  }
   if (isMockAnalytics) {
     recordMockEvent(event, properties);
     return;
@@ -77,7 +84,12 @@ export default function MixpanelTracker() {
   const pathname = usePathname();
 
   useEffect(() => {
-    trackLandingEvent("Landing page viewed", { path: pathname });
+    const trackPageView = () =>
+      trackLandingEvent("Landing page viewed", { path: pathname });
+
+    trackPageView();
+    window.addEventListener(consentGrantedEvent, trackPageView);
+    return () => window.removeEventListener(consentGrantedEvent, trackPageView);
   }, [pathname]);
 
   return null;
