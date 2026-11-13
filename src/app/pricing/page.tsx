@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { PricingCards } from "@/components/PricingCards";
 import { SignupLink } from "@/components/SignupLink";
 import { SiteHeader } from "@/components/SiteHeader";
+import { TrackedLandingLink } from "@/components/TrackedLandingLink";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -37,7 +38,13 @@ export default function PricingPage() {
         </p>
         <p className="enterprise-line">
           Growing beyond a solo practice?{" "}
-          <a href="mailto:sales@cohora.org">Talk to us.</a>
+          <TrackedLandingLink
+            eventName="sales_contacted"
+            eventProperties={{ source: "pricing_page" }}
+            href="mailto:sales@cohora.org"
+          >
+            Talk to us.
+          </TrackedLandingLink>
         </p>
       </section>
 
@@ -47,11 +54,7 @@ export default function PricingPage() {
             Give your teaching <em>more room to breathe.</em>
           </h2>
           <p>Start with a workspace that understands independent tutoring.</p>
-          <SignupLink
-            className="button light-button"
-            rel="noreferrer"
-            target="_blank"
-          >
+          <SignupLink className="button light-button" analyticsSource="pricing_final_cta">
             <span>Start with the free plan</span> <ArrowRight size={17} />
           </SignupLink>
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
 import { trackLandingEvent } from "@/components/MixpanelTracker";
 import { SignupLink } from "@/components/SignupLink";
@@ -93,9 +93,7 @@ const plans = [
   },
 ];
 
-export function PricingCards({
-  showFuturePlans,
-}: PricingCardsProps) {
+export function PricingCards({ showFuturePlans }: PricingCardsProps) {
   const [interval, setInterval] = useState<"monthly" | "yearly">("yearly");
   const visiblePlans = plans.filter(
     (plan) => plan.visibleNow || showFuturePlans,
@@ -103,13 +101,14 @@ export function PricingCards({
 
   return (
     <>
+      <PricingViewedTracker />
       <div className="pricing-interval" aria-label="Billing interval">
         <button
           type="button"
           className={interval === "monthly" ? "active" : ""}
           onClick={() => {
             setInterval("monthly");
-            trackLandingEvent("Landing billing interval selected", {
+            trackLandingEvent("landing_billing_interval_selected", {
               interval: "monthly",
             });
           }}
@@ -121,7 +120,7 @@ export function PricingCards({
           className={interval === "yearly" ? "active" : ""}
           onClick={() => {
             setInterval("yearly");
-            trackLandingEvent("Landing billing interval selected", {
+            trackLandingEvent("landing_billing_interval_selected", {
               interval: "yearly",
             });
           }}
@@ -172,20 +171,26 @@ export function PricingCards({
                 <a
                   className={`button${plan.primary ? "" : " button-outline"}`}
                   href="mailto:sales@cohora.org"
-                  onClick={() =>
-                    trackLandingEvent("Landing sales contacted", { plan: plan.name, interval })
-                  }
+                  onClick={() => {
+                    trackLandingEvent("sales_contacted", {
+                      plan: plan.name,
+                      interval,
+                    });
+                  }}
                 >
                   {plan.cta}
                 </a>
               ) : (
                 <SignupLink
                   className={`button${plan.primary ? "" : " button-outline"}`}
-                  rel="noreferrer"
-                  target="_blank"
-                  onClick={() =>
-                    trackLandingEvent("Landing plan selected", { plan: plan.name, interval })
-                  }
+                  analyticsSource="pricing_plan_card"
+                  analyticsProperties={{ plan: plan.name, interval }}
+                  onClick={() => {
+                    trackLandingEvent("landing_plan_selected", {
+                      plan: plan.name,
+                      interval,
+                    });
+                  }}
                 >
                   {plan.cta} <ArrowRight size={17} />
                 </SignupLink>
@@ -196,4 +201,11 @@ export function PricingCards({
       </div>
     </>
   );
+}
+
+function PricingViewedTracker() {
+  useEffect(() => {
+    trackLandingEvent("landing_pricing_viewed");
+  }, []);
+  return null;
 }

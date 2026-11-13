@@ -34,8 +34,9 @@ export default function CookieConsent() {
         <h2 id="cookie-consent-title">Cookie preferences</h2>
         <p id="cookie-consent-description">
           We use necessary local storage to remember this choice. With your
-          permission, we also use Mixpanel for usage analytics and Sentry for
-          error diagnostics.
+          permission, we use Mixpanel and Google Tag Manager for product
+          analytics, preserve campaign attribution for signup, and use Sentry
+          for error diagnostics.
         </p>
         <a href="/privacy">Read our Privacy Policy</a>
       </div>

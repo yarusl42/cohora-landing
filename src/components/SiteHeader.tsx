@@ -4,6 +4,7 @@ import { ArrowRight, Menu, X } from "lucide-react";
 import { useEffect, useId, useState } from "react";
 import { signInUrl } from "@/config/dashboard";
 import { SignupLink } from "@/components/SignupLink";
+import { trackLandingEvent } from "@/components/MixpanelTracker";
 
 type SiteHeaderProps = {
   page?: "home" | "pricing";
@@ -54,7 +55,11 @@ export function SiteHeader({ page = "home" }: SiteHeaderProps) {
       </a>
       <nav aria-label="Main navigation">
         {navItems.map(([label, href]) => (
-          <a href={href} key={label}>
+          <a
+            href={href}
+            key={label}
+            onClick={() => trackLandingEvent("landing_navigation_clicked", { label, placement: "header" })}
+          >
             {label}
           </a>
         ))}
@@ -63,16 +68,11 @@ export function SiteHeader({ page = "home" }: SiteHeaderProps) {
         <a
           className="login-button"
           href={signInUrl}
-          rel="noreferrer"
-          target="_blank"
+          onClick={() => trackLandingEvent("landing_login_clicked", { placement: "header" })}
         >
           Log in
         </a>
-        <SignupLink
-          className="button button-small"
-          rel="noreferrer"
-          target="_blank"
-        >
+        <SignupLink className="button button-small" analyticsSource="header">
           Start with the free plan <ArrowRight size={15} />
         </SignupLink>
       </div>
@@ -89,7 +89,14 @@ export function SiteHeader({ page = "home" }: SiteHeaderProps) {
       <div className={`mobile-menu${menuOpen ? " is-open" : ""}`} id={menuId}>
         <nav aria-label="Mobile navigation">
           {navItems.map(([label, href]) => (
-            <a href={href} key={label} onClick={closeMenu}>
+            <a
+              href={href}
+              key={label}
+              onClick={() => {
+                trackLandingEvent("landing_navigation_clicked", { label, placement: "mobile_menu" });
+                closeMenu();
+              }}
+            >
               {label}
             </a>
           ))}
@@ -98,18 +105,14 @@ export function SiteHeader({ page = "home" }: SiteHeaderProps) {
           <a
             className="login-button"
             href={signInUrl}
-            rel="noreferrer"
-            target="_blank"
-            onClick={closeMenu}
+            onClick={() => {
+              trackLandingEvent("landing_login_clicked", { placement: "mobile_menu" });
+              closeMenu();
+            }}
           >
             Log in
           </a>
-          <SignupLink
-            className="button"
-            rel="noreferrer"
-            target="_blank"
-            onClick={closeMenu}
-          >
+          <SignupLink className="button" analyticsSource="mobile_menu" onClick={closeMenu}>
             Start with the free plan <ArrowRight size={17} />
           </SignupLink>
         </div>

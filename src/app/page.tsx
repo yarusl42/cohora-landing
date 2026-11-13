@@ -1,7 +1,6 @@
 import {
   ArrowRight,
   Check,
-  ChevronDown,
   CircleDollarSign,
   Clock3,
   GraduationCap,
@@ -11,6 +10,9 @@ import {
 import { PricingCards } from "@/components/PricingCards";
 import { SignupLink } from "@/components/SignupLink";
 import { SiteHeader } from "@/components/SiteHeader";
+import { LandingEngagementTracker } from "@/components/LandingEngagementTracker";
+import { LandingFaq } from "@/components/LandingFaq";
+import { TrackedLandingLink } from "@/components/TrackedLandingLink";
 import { signInUrl } from "@/config/dashboard";
 
 const benefits = [
@@ -53,7 +55,7 @@ const faqs = [
     "What happens when I outgrow Free Tutor?",
     "Move to Tutor Pro for up to 50 student places. If you need a multi-staff or tailored setup, talk to us about Enterprise.",
   ],
-];
+] as const;
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -173,6 +175,7 @@ export default function Home() {
 
   return (
     <main>
+      <LandingEngagementTracker />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -197,16 +200,17 @@ export default function Home() {
             clear workspace - so your practice feels easier to run.
           </p>
           <div className="hero-actions">
-            <SignupLink
-              className="button"
-              rel="noreferrer"
-              target="_blank"
-            >
+          <SignupLink className="button" analyticsSource="hero">
               Start with the free plan <ArrowRight size={17} />
             </SignupLink>
-            <a className="text-link" href="#how-it-works">
+            <TrackedLandingLink
+              className="text-link"
+              eventName="landing_navigation_clicked"
+              eventProperties={{ label: "how_it_works", placement: "hero" }}
+              href="#how-it-works"
+            >
               See how it works <span>↓</span>
-            </a>
+            </TrackedLandingLink>
           </div>
           <p className="hero-note">
             <Check size={15} /> Built for solo tutors · Free plan includes up to
@@ -265,9 +269,14 @@ export default function Home() {
               spreadsheets. You stay in control without building a system around
               yourself.
             </p>
-            <a className="text-link" href="/pricing">
+            <TrackedLandingLink
+              className="text-link"
+              eventName="landing_navigation_clicked"
+              eventProperties={{ label: "pricing", placement: "workflow" }}
+              href="/pricing"
+            >
               View pricing <ArrowRight size={16} />
-            </a>
+            </TrackedLandingLink>
           </div>
           <ol className="steps">
             <li>
@@ -316,7 +325,13 @@ export default function Home() {
         <PricingCards showFuturePlans={showFuturePlans} />
         <p className="enterprise-line">
           Growing beyond a solo practice?{" "}
-          <a href="mailto:sales@cohora.org">Talk to us.</a>
+          <TrackedLandingLink
+            eventName="sales_contacted"
+            eventProperties={{ source: "pricing_section" }}
+            href="mailto:sales@cohora.org"
+          >
+            Talk to us.
+          </TrackedLandingLink>
         </p>
       </section>
 
@@ -325,17 +340,7 @@ export default function Home() {
           <p className="eyebrow">Questions, answered</p>
           <h2>Simple from the start.</h2>
         </div>
-        <div className="faq-list">
-          {faqs.map(([question, answer]) => (
-            <details key={question}>
-              <summary>
-                {question}
-                <ChevronDown size={19} />
-              </summary>
-              <p>{answer}</p>
-            </details>
-          ))}
-        </div>
+        <LandingFaq faqs={faqs} />
       </section>
 
       <section className="final-cta" id="start">
@@ -347,11 +352,7 @@ export default function Home() {
             <em>more room to breathe.</em>
           </h2>
           <p>Start with a workspace that understands independent tutoring.</p>
-          <SignupLink
-            className="button light-button"
-            rel="noreferrer"
-            target="_blank"
-          >
+          <SignupLink className="button light-button" analyticsSource="final_cta">
             <span>Start with the free plan</span> <ArrowRight size={17} />
           </SignupLink>
         </div>
@@ -382,12 +383,8 @@ export default function Home() {
             </div>
             <div>
               <span>Account</span>
-              <a href={signInUrl} rel="noreferrer" target="_blank">
-                Sign in
-              </a>
-              <SignupLink rel="noreferrer" target="_blank">
-                Start with the free plan
-              </SignupLink>
+              <a href={signInUrl}>Sign in</a>
+              <SignupLink analyticsSource="footer">Start with the free plan</SignupLink>
             </div>
           </div>
         </div>

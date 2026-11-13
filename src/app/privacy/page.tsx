@@ -246,13 +246,24 @@ export default function PrivacyPage() {
             retained for up to six months unless you change it.
           </p>
           <p>
+            With your consent, we also store a first-party cookie for up to 90
+            days containing campaign attribution values, such as UTM parameters
+            and advertising click identifiers. If you create an account, we
+            attach the first and latest attribution records to it, then remove
+            the temporary cookie.
+          </p>
+          <p>
             With your consent, we use Mixpanel to understand website usage, such
             as pages viewed and interactions with our site. Mixpanel uses a
             randomly generated identifier stored locally in your browser to
             distinguish visits.
           </p>
           <p>
-            With your consent, we also use Sentry to receive browser error and
+            With your consent, we use Google Tag Manager to deliver the
+            analytics tags configured for this website.
+          </p>
+          <p>
+            With your consent, we use Sentry to receive browser error and
             diagnostic information so that we can identify and fix reliability
             issues. We do not activate these optional technologies until you
             make a choice through our cookie banner.
@@ -280,6 +291,10 @@ export default function PrivacyPage() {
             <li>Payment processing</li>
             <li>
               Analytics provided by Mixpanel, where you have given consent
+            </li>
+            <li>
+              Analytics tags delivered through Google Tag Manager, where you
+              have given consent
             </li>
             <li>
               Error monitoring provided by Sentry, where you have given consent

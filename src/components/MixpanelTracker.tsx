@@ -7,6 +7,7 @@ import {
   getConsentChoice,
   mixpanelDistinctIdStorageKey,
 } from "@/config/consent";
+import { trackLandingGoogleTagManagerEvent } from "@/components/GoogleTagManager";
 
 const token = process.env.NEXT_PUBLIC_MIXPANEL_TOKEN;
 const apiHost = "https://api-eu.mixpanel.com";
@@ -18,6 +19,44 @@ type MockLandingEvent = {
   timestamp: string;
 };
 
+type AnalyticsDestinations = {
+  mixpanel?: boolean;
+  gtm?: boolean;
+};
+
+const gtmEventNames = new Set([
+  "landing_viewed",
+  "landing_signup_clicked",
+  "landing_pricing_viewed",
+  "landing_billing_interval_selected",
+  "landing_plan_selected",
+  "sales_contacted",
+  "signup_form_viewed",
+  "signup_option_selected",
+  "signup_field_started",
+  "signup_validation_failed",
+  "signup_form_submitted",
+  "signup_request_failed",
+  "signup_completed",
+  "signup_email_verification_required",
+  "email_verified",
+  "plans_viewed",
+  "plan_checkout_started",
+  "plan_checkout_completed",
+  "checkout_failed",
+  "subscription_cancellation_started",
+  "group_created",
+  "course_created",
+  "lesson_created",
+  "lead_created",
+  "billing_portal_opened",
+  "landing_scroll_depth_reached",
+  "landing_login_clicked",
+  "landing_section_viewed",
+  "landing_navigation_clicked",
+  "landing_faq_opened",
+]);
+
 declare global {
   interface Window {
     __COHORA_MIXPANEL_EVENTS__?: MockLandingEvent[];
@@ -25,6 +64,7 @@ declare global {
 }
 
 const recordMockEvent = (event: string, properties: Record<string, string>) => {
+  console.info("[Mixpanel]", { event, properties });
   window.__COHORA_MIXPANEL_EVENTS__ ??= [];
   window.__COHORA_MIXPANEL_EVENTS__.push({
     event,
@@ -51,8 +91,17 @@ const getDistinctId = () => {
 export const trackLandingEvent = (
   event: string,
   properties: Record<string, string> = {},
+  destinations: AnalyticsDestinations = {},
 ) => {
   if (getConsentChoice() !== "accepted") {
+    return;
+  }
+  const mixpanel = destinations.mixpanel ?? true;
+  const gtm = destinations.gtm ?? gtmEventNames.has(event);
+  if (gtm) {
+    trackLandingGoogleTagManagerEvent(event, properties);
+  }
+  if (!mixpanel) {
     return;
   }
   if (isMockAnalytics) {
@@ -84,8 +133,12 @@ export default function MixpanelTracker() {
   const pathname = usePathname();
 
   useEffect(() => {
+    if (isMockAnalytics) {
+      console.info("[Mixpanel]");
+    }
+
     const trackPageView = () =>
-      trackLandingEvent("Landing page viewed", { path: pathname });
+      trackLandingEvent("landing_viewed", { path: pathname });
 
     trackPageView();
     window.addEventListener(consentGrantedEvent, trackPageView);

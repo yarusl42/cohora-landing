@@ -46,6 +46,10 @@ export function setConsentChoice(choice: ConsentChoice) {
 
     if (choice === "rejected") {
       localStorage.removeItem(mixpanelDistinctIdStorageKey);
+      const domain =
+        process.env.NODE_ENV === "production" ? "; Domain=.cohora.org" : "";
+      const secure = process.env.NODE_ENV === "production" ? "; Secure" : "";
+      document.cookie = `cohora_signup_attribution=; Max-Age=0; Path=/; SameSite=Lax${secure}${domain}`;
     }
 
     window.dispatchEvent(new Event(consentChangedEvent));

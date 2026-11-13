@@ -1,40 +1,29 @@
 "use client";
 
-import { useEffect, useState, type ComponentPropsWithoutRef } from "react";
+import type { ComponentPropsWithoutRef } from "react";
 import { signupUrl } from "@/config/dashboard";
+import { captureSignupAttribution } from "@/config/attribution";
+import { trackLandingEvent } from "@/components/MixpanelTracker";
 
-const campaignParameters = new Set([
-  "utm_source",
-  "utm_medium",
-  "utm_campaign",
-  "utm_term",
-  "utm_content",
-  "utm_id",
-  "utm_source_platform",
-  "utm_creative_format",
-  "utm_marketing_tactic",
-]);
-
-const getCampaignSignupUrl = () => {
-  const url = new URL(signupUrl);
-  const currentParams = new URLSearchParams(window.location.search);
-
-  currentParams.forEach((value, key) => {
-    const normalizedKey = key.toLowerCase();
-    if (campaignParameters.has(normalizedKey) && value.trim()) {
-      url.searchParams.set(normalizedKey, value.trim().slice(0, 500));
-    }
-  });
-
-  return url.toString();
+type SignupLinkProps = Omit<ComponentPropsWithoutRef<"a">, "href"> & {
+  analyticsSource?: string;
+  analyticsProperties?: Record<string, string>;
 };
 
-export function SignupLink(props: Omit<ComponentPropsWithoutRef<"a">, "href">) {
-  const [href, setHref] = useState(signupUrl);
-
-  useEffect(() => {
-    setHref(getCampaignSignupUrl());
-  }, []);
-
-  return <a {...props} href={href} />;
+export function SignupLink(props: SignupLinkProps) {
+  const { analyticsProperties, analyticsSource, onClick, ...anchorProps } = props;
+  return (
+    <a
+      {...anchorProps}
+      href={signupUrl}
+      onClick={(event) => {
+        captureSignupAttribution();
+        trackLandingEvent("landing_signup_clicked", {
+          source: analyticsSource || "unspecified",
+          ...analyticsProperties,
+        });
+        onClick?.(event);
+      }}
+    />
+  );
 }

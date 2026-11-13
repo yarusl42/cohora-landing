@@ -17,6 +17,10 @@ type IdleCapableWindow = {
 let sentryPromise: Promise<Sentry> | undefined;
 
 const loadSentry = () => {
+  if (process.env.NODE_ENV !== "production") {
+    return Promise.reject(new Error("Sentry is disabled outside production"));
+  }
+
   if (!process.env.NEXT_PUBLIC_SENTRY_DSN) {
     return Promise.reject(
       new Error("NEXT_PUBLIC_SENTRY_DSN is not configured"),
@@ -35,6 +39,11 @@ const loadSentry = () => {
 };
 
 const reportBrowserError = (error: unknown) => {
+  if (process.env.NODE_ENV !== "production") {
+    console.info("[Sentry] captured browser exception", error);
+    return;
+  }
+
   void loadSentry()
     .then((Sentry) => Sentry.captureException(error))
     .catch(() => undefined);
@@ -49,6 +58,11 @@ const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
 };
 
 const initializeSentry = () => {
+  if (process.env.NODE_ENV !== "production") {
+    console.info("[Sentry]");
+    return;
+  }
+
   if (
     sentryInitialized ||
     !process.env.NEXT_PUBLIC_SENTRY_DSN ||
@@ -91,13 +105,18 @@ const updateSentryConsent = () => {
     .catch(() => undefined);
 };
 
-if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_SENTRY_DSN) {
+if (typeof window !== "undefined") {
   initializeSentry();
   window.addEventListener(consentGrantedEvent, initializeSentry);
   window.addEventListener(consentChangedEvent, updateSentryConsent);
 }
 
 export const onRouterTransitionStart: RouterTransitionStart = (...args) => {
+  if (process.env.NODE_ENV !== "production") {
+    console.info("[Sentry] router transition", args);
+    return;
+  }
+
   if (getConsentChoice() !== "accepted") return;
 
   void loadSentry()

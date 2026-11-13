@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import "@/index.css";
 import CookieConsent from "@/components/CookieConsent";
+import GoogleTagManager from "@/components/GoogleTagManager";
 import MixpanelTracker from "@/components/MixpanelTracker";
+import SignupAttributionTracker from "@/components/SignupAttributionTracker";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cohora.org";
 const metadataBase = new URL(siteUrl);
@@ -80,6 +82,8 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <MixpanelTracker />
+        <GoogleTagManager />
+        <SignupAttributionTracker />
         {children}
         <CookieConsent />
       </body>
