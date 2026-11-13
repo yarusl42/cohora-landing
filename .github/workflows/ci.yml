@@ -75,6 +75,7 @@ jobs:
           build-args: |
             NEXT_PUBLIC_MIXPANEL_TOKEN=${{ vars.NEXT_PUBLIC_MIXPANEL_TOKEN }}
             NEXT_PUBLIC_SENTRY_DSN=${{ vars.NEXT_PUBLIC_SENTRY_DSN }}
+            NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID=${{ vars.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID }}
           cache-from: type=gha,scope=landing
           cache-to: type=gha,mode=max,scope=landing
 

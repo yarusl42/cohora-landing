@@ -1,18 +1,61 @@
 "use client";
 
 import { useEffect } from "react";
-import mixpanel from "mixpanel-browser";
 import { usePathname } from "next/navigation";
+import {
+  consentGrantedEvent,
+  getConsentChoice,
+  mixpanelDistinctIdStorageKey,
+} from "@/config/consent";
+import { trackLandingGoogleTagManagerEvent } from "@/components/GoogleTagManager";
 
 const token = process.env.NEXT_PUBLIC_MIXPANEL_TOKEN;
+const apiHost = "https://api-eu.mixpanel.com";
 const isMockAnalytics = process.env.NODE_ENV !== "production";
-let initialized = false;
 
 type MockLandingEvent = {
   event: string;
   properties: Record<string, string>;
   timestamp: string;
 };
+
+type AnalyticsDestinations = {
+  mixpanel?: boolean;
+  gtm?: boolean;
+};
+
+const gtmEventNames = new Set([
+  "landing_viewed",
+  "landing_signup_clicked",
+  "landing_pricing_viewed",
+  "landing_billing_interval_selected",
+  "landing_plan_selected",
+  "sales_contacted",
+  "signup_form_viewed",
+  "signup_option_selected",
+  "signup_field_started",
+  "signup_validation_failed",
+  "signup_form_submitted",
+  "signup_request_failed",
+  "signup_completed",
+  "signup_email_verification_required",
+  "email_verified",
+  "plans_viewed",
+  "plan_checkout_started",
+  "plan_checkout_completed",
+  "checkout_failed",
+  "subscription_cancellation_started",
+  "group_created",
+  "course_created",
+  "lesson_created",
+  "lead_created",
+  "billing_portal_opened",
+  "landing_scroll_depth_reached",
+  "landing_login_clicked",
+  "landing_section_viewed",
+  "landing_navigation_clicked",
+  "landing_faq_opened",
+]);
 
 declare global {
   interface Window {
@@ -21,6 +64,7 @@ declare global {
 }
 
 const recordMockEvent = (event: string, properties: Record<string, string>) => {
+  console.info("[Mixpanel]", { event, properties });
   window.__COHORA_MIXPANEL_EVENTS__ ??= [];
   window.__COHORA_MIXPANEL_EVENTS__.push({
     event,
@@ -29,48 +73,76 @@ const recordMockEvent = (event: string, properties: Record<string, string>) => {
   });
 };
 
-const initialize = () => {
-  if (initialized || (!isMockAnalytics && !token)) {
-    return;
+const createDistinctId = () =>
+  typeof crypto?.randomUUID === "function"
+    ? crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+const getDistinctId = () => {
+  const stored = localStorage.getItem(mixpanelDistinctIdStorageKey);
+  if (stored) {
+    return stored;
   }
-  if (isMockAnalytics) {
-    initialized = true;
-    return;
-  }
-  if (!token) {
-    return;
-  }
-  mixpanel.init(token, {
-    autocapture: false,
-    track_pageview: false,
-    persistence: "localStorage",
-  });
-  initialized = true;
+  const distinctId = createDistinctId();
+  localStorage.setItem(mixpanelDistinctIdStorageKey, distinctId);
+  return distinctId;
 };
 
 export const trackLandingEvent = (
   event: string,
   properties: Record<string, string> = {},
+  destinations: AnalyticsDestinations = {},
 ) => {
-  initialize();
-  if (initialized) {
-    if (isMockAnalytics) {
-      recordMockEvent(event, properties);
-      return;
-    }
-    mixpanel.track(event, properties);
+  if (getConsentChoice() !== "accepted") {
+    return;
   }
+  const mixpanel = destinations.mixpanel ?? true;
+  const gtm = destinations.gtm ?? gtmEventNames.has(event);
+  if (gtm) {
+    trackLandingGoogleTagManagerEvent(event, properties);
+  }
+  if (!mixpanel) {
+    return;
+  }
+  if (isMockAnalytics) {
+    recordMockEvent(event, properties);
+    return;
+  }
+  if (!token) {
+    return;
+  }
+  void fetch(`${apiHost}/track`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify([
+      {
+        event,
+        properties: {
+          token,
+          distinct_id: getDistinctId(),
+          time: Date.now(),
+          ...properties,
+        },
+      },
+    ]),
+    keepalive: true,
+  }).catch(() => {});
 };
 
 export default function MixpanelTracker() {
   const pathname = usePathname();
 
   useEffect(() => {
-    initialize();
-  }, []);
+    if (isMockAnalytics) {
+      console.info("[Mixpanel]");
+    }
 
-  useEffect(() => {
-    trackLandingEvent("Landing page viewed", { path: pathname });
+    const trackPageView = () =>
+      trackLandingEvent("landing_viewed", { path: pathname });
+
+    trackPageView();
+    window.addEventListener(consentGrantedEvent, trackPageView);
+    return () => window.removeEventListener(consentGrantedEvent, trackPageView);
   }, [pathname]);
 
   return null;

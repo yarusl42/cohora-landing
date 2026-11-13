@@ -1,15 +1,19 @@
 import {
   ArrowRight,
   Check,
-  ChevronDown,
   CircleDollarSign,
   Clock3,
   GraduationCap,
-  Menu,
   MessageSquareText,
   UsersRound,
 } from "lucide-react";
 import { PricingCards } from "@/components/PricingCards";
+import { SignupLink } from "@/components/SignupLink";
+import { SiteHeader } from "@/components/SiteHeader";
+import { LandingEngagementTracker } from "@/components/LandingEngagementTracker";
+import { LandingFaq } from "@/components/LandingFaq";
+import { TrackedLandingLink } from "@/components/TrackedLandingLink";
+import { signInUrl } from "@/config/dashboard";
 
 const benefits = [
   {
@@ -51,7 +55,7 @@ const faqs = [
     "What happens when I outgrow Free Tutor?",
     "Move to Tutor Pro for up to 50 student places. If you need a multi-staff or tailored setup, talk to us about Enterprise.",
   ],
-];
+] as const;
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -167,41 +171,18 @@ function ProductPreview() {
 }
 
 export default function Home() {
-  const dashboardUrl = "https://app.cohora.org";
-  const signInUrl = `${dashboardUrl}/login`;
-  const signupUrl = `${dashboardUrl}/signup/owner`;
   const showFuturePlans = process.env.NODE_ENV === "development";
 
   return (
     <main>
+      <LandingEngagementTracker />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
         }}
       />
-      <header className="site-header container">
-        <a href="#top" className="brand" aria-label="Cohora home">
-          <img src="/logo.png" alt="" />
-          <span>Cohora</span>
-        </a>
-        <nav aria-label="Main navigation">
-          <a href="#how-it-works">How it works</a>
-          <a href="/pricing">Pricing</a>
-          <a href="#faq">FAQ</a>
-        </nav>
-        <div className="header-actions">
-          <a className="sign-in" href={signInUrl}>
-            Sign in
-          </a>
-          <a className="button button-small" href={signupUrl}>
-            Start with the free plan <ArrowRight size={15} />
-          </a>
-        </div>
-        <button className="menu-button" aria-label="Open menu">
-          <Menu size={21} />
-        </button>
-      </header>
+      <SiteHeader />
 
       <section className="hero container" id="top">
         <div className="hero-copy">
@@ -219,12 +200,17 @@ export default function Home() {
             clear workspace - so your practice feels easier to run.
           </p>
           <div className="hero-actions">
-            <a className="button" href={signupUrl}>
+          <SignupLink className="button" analyticsSource="hero">
               Start with the free plan <ArrowRight size={17} />
-            </a>
-            <a className="text-link" href="#how-it-works">
+            </SignupLink>
+            <TrackedLandingLink
+              className="text-link"
+              eventName="landing_navigation_clicked"
+              eventProperties={{ label: "how_it_works", placement: "hero" }}
+              href="#how-it-works"
+            >
               See how it works <span>↓</span>
-            </a>
+            </TrackedLandingLink>
           </div>
           <p className="hero-note">
             <Check size={15} /> Built for solo tutors · Free plan includes up to
@@ -283,9 +269,14 @@ export default function Home() {
               spreadsheets. You stay in control without building a system around
               yourself.
             </p>
-            <a className="text-link" href="/pricing">
+            <TrackedLandingLink
+              className="text-link"
+              eventName="landing_navigation_clicked"
+              eventProperties={{ label: "pricing", placement: "workflow" }}
+              href="/pricing"
+            >
               View pricing <ArrowRight size={16} />
-            </a>
+            </TrackedLandingLink>
           </div>
           <ol className="steps">
             <li>
@@ -331,10 +322,16 @@ export default function Home() {
             the work clear and focused.
           </p>
         </div>
-        <PricingCards signupUrl={signupUrl} showFuturePlans={showFuturePlans} />
+        <PricingCards showFuturePlans={showFuturePlans} />
         <p className="enterprise-line">
           Growing beyond a solo practice?{" "}
-          <a href="mailto:sales@cohora.org">Talk to us.</a>
+          <TrackedLandingLink
+            eventName="sales_contacted"
+            eventProperties={{ source: "pricing_section" }}
+            href="mailto:sales@cohora.org"
+          >
+            Talk to us.
+          </TrackedLandingLink>
         </p>
       </section>
 
@@ -343,17 +340,7 @@ export default function Home() {
           <p className="eyebrow">Questions, answered</p>
           <h2>Simple from the start.</h2>
         </div>
-        <div className="faq-list">
-          {faqs.map(([question, answer]) => (
-            <details key={question}>
-              <summary>
-                {question}
-                <ChevronDown size={19} />
-              </summary>
-              <p>{answer}</p>
-            </details>
-          ))}
-        </div>
+        <LandingFaq faqs={faqs} />
       </section>
 
       <section className="final-cta" id="start">
@@ -365,9 +352,9 @@ export default function Home() {
             <em>more room to breathe.</em>
           </h2>
           <p>Start with a workspace that understands independent tutoring.</p>
-          <a className="button light-button" href={signupUrl}>
+          <SignupLink className="button light-button" analyticsSource="final_cta">
             <span>Start with the free plan</span> <ArrowRight size={17} />
-          </a>
+          </SignupLink>
         </div>
       </section>
 
@@ -397,7 +384,7 @@ export default function Home() {
             <div>
               <span>Account</span>
               <a href={signInUrl}>Sign in</a>
-              <a href={signupUrl}>Start with the free plan</a>
+              <SignupLink analyticsSource="footer">Start with the free plan</SignupLink>
             </div>
           </div>
         </div>

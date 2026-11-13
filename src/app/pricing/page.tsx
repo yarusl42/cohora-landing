@@ -1,6 +1,9 @@
 import { ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
 import { PricingCards } from "@/components/PricingCards";
+import { SignupLink } from "@/components/SignupLink";
+import { SiteHeader } from "@/components/SiteHeader";
+import { TrackedLandingLink } from "@/components/TrackedLandingLink";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -8,29 +11,12 @@ export const metadata: Metadata = {
   alternates: { canonical: "/pricing" },
 };
 
-const dashboardUrl = "https://app.cohora.org";
-const signInUrl = `${dashboardUrl}/login`;
-const signupUrl = `${dashboardUrl}/signup/owner`;
-
 export default function PricingPage() {
   const showFuturePlans = process.env.NODE_ENV === "development";
 
   return (
     <main>
-      <header className="site-header container">
-        <a href="/" className="brand" aria-label="Cohora home">
-          <img src="/logo.png" alt="" />
-          <span>Cohora</span>
-        </a>
-        <div className="header-actions pricing-header-actions">
-          <a className="sign-in" href={signInUrl}>
-            Sign in
-          </a>
-          <a className="button button-small" href={signupUrl}>
-            Start with the free plan <ArrowRight size={15} />
-          </a>
-        </div>
-      </header>
+      <SiteHeader page="pricing" />
 
       <section className="pricing-page-hero container">
         <p className="eyebrow">Simple pricing for solo tutors</p>
@@ -43,10 +29,7 @@ export default function PricingPage() {
 
       <section className="pricing-page-plans container" aria-label="Plans">
         <div className="pricing-page-grid">
-          <PricingCards
-            signupUrl={signupUrl}
-            showFuturePlans={showFuturePlans}
-          />
+          <PricingCards showFuturePlans={showFuturePlans} />
         </div>
         <p className="pricing-note">
           Tutor Pro is billed monthly in advance. Cancel any time before your
@@ -55,7 +38,13 @@ export default function PricingPage() {
         </p>
         <p className="enterprise-line">
           Growing beyond a solo practice?{" "}
-          <a href="mailto:sales@cohora.org">Talk to us.</a>
+          <TrackedLandingLink
+            eventName="sales_contacted"
+            eventProperties={{ source: "pricing_page" }}
+            href="mailto:sales@cohora.org"
+          >
+            Talk to us.
+          </TrackedLandingLink>
         </p>
       </section>
 
@@ -65,9 +54,9 @@ export default function PricingPage() {
             Give your teaching <em>more room to breathe.</em>
           </h2>
           <p>Start with a workspace that understands independent tutoring.</p>
-          <a className="button light-button" href={signupUrl}>
+          <SignupLink className="button light-button" analyticsSource="pricing_final_cta">
             <span>Start with the free plan</span> <ArrowRight size={17} />
-          </a>
+          </SignupLink>
         </div>
       </section>
 
