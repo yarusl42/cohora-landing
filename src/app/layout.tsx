@@ -7,8 +7,6 @@ import SignupAttributionTracker from "@/components/SignupAttributionTracker";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cohora.org";
 const metadataBase = new URL(siteUrl);
-const googleTagManagerId =
-  process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID?.trim();
 
 export const metadata: Metadata = {
   metadataBase,
@@ -82,23 +80,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        {process.env.NODE_ENV === "production" && googleTagManagerId ? (
-          <>
-            <script
-              dangerouslySetInnerHTML={{
-                __html:
-                  'window.dataLayer = window.dataLayer || []; window.dataLayer.push({ "gtm.start": Date.now(), event: "gtm.js" });',
-              }}
-            />
-            <script
-              async
-              id="cohora-google-tag-manager"
-              src={`https://www.googletagmanager.com/gtm.js?id=${googleTagManagerId}`}
-            />
-          </>
-        ) : null}
-      </head>
       <body>
         <MixpanelTracker />
         <GoogleTagManager />

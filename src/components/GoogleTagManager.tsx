@@ -39,8 +39,6 @@ const loadGoogleTagManager = () => {
 
 export default function GoogleTagManager() {
   useEffect(() => {
-    console.info("[GTM] NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID", containerId);
-
     if (process.env.NODE_ENV !== "production") {
       return;
     }
