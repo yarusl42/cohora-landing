@@ -42,6 +42,7 @@ jobs:
     name: Build and publish landing image
     needs: validate
     runs-on: ubuntu-latest
+    environment: production
     outputs:
       landing-image: ${{ steps.meta.outputs.landing-image }}
 
