@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { consentGrantedEvent, getConsentChoice } from "@/config/consent";
 
 const containerId = process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID?.trim();
 const scriptId = "cohora-google-tag-manager";
@@ -44,18 +43,7 @@ export default function GoogleTagManager() {
       console.info("[GTM]", { containerId });
       return;
     }
-    if (!containerId) return;
-
-    const loadWhenConsented = () => {
-      if (getConsentChoice() === "accepted") {
-        loadGoogleTagManager();
-      }
-    };
-
-    loadWhenConsented();
-    window.addEventListener(consentGrantedEvent, loadWhenConsented);
-    return () =>
-      window.removeEventListener(consentGrantedEvent, loadWhenConsented);
+    loadGoogleTagManager();
   }, []);
 
   return null;

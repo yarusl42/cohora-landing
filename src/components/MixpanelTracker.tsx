@@ -93,15 +93,12 @@ export const trackLandingEvent = (
   properties: Record<string, string> = {},
   destinations: AnalyticsDestinations = {},
 ) => {
-  if (getConsentChoice() !== "accepted") {
-    return;
-  }
   const mixpanel = destinations.mixpanel ?? true;
   const gtm = destinations.gtm ?? gtmEventNames.has(event);
   if (gtm) {
     trackLandingGoogleTagManagerEvent(event, properties);
   }
-  if (!mixpanel) {
+  if (!mixpanel || getConsentChoice() !== "accepted") {
     return;
   }
   if (isMockAnalytics) {
