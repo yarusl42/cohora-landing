@@ -54,7 +54,10 @@ export default function PricingPage() {
             Give your teaching <em>more room to breathe.</em>
           </h2>
           <p>Start with a workspace that understands independent tutoring.</p>
-          <SignupLink className="button light-button" analyticsSource="pricing_final_cta">
+          <SignupLink
+            className="button light-button"
+            analyticsSource="pricing_final_cta"
+          >
             <span>Start with the free plan</span> <ArrowRight size={17} />
           </SignupLink>
         </div>

@@ -58,7 +58,12 @@ export function SiteHeader({ page = "home" }: SiteHeaderProps) {
           <a
             href={href}
             key={label}
-            onClick={() => trackLandingEvent("landing_navigation_clicked", { label, placement: "header" })}
+            onClick={() =>
+              trackLandingEvent("landing_navigation_clicked", {
+                label,
+                placement: "header",
+              })
+            }
           >
             {label}
           </a>
@@ -68,7 +73,9 @@ export function SiteHeader({ page = "home" }: SiteHeaderProps) {
         <a
           className="login-button"
           href={signInUrl}
-          onClick={() => trackLandingEvent("landing_login_clicked", { placement: "header" })}
+          onClick={() =>
+            trackLandingEvent("landing_login_clicked", { placement: "header" })
+          }
         >
           Log in
         </a>
@@ -93,7 +100,10 @@ export function SiteHeader({ page = "home" }: SiteHeaderProps) {
               href={href}
               key={label}
               onClick={() => {
-                trackLandingEvent("landing_navigation_clicked", { label, placement: "mobile_menu" });
+                trackLandingEvent("landing_navigation_clicked", {
+                  label,
+                  placement: "mobile_menu",
+                });
                 closeMenu();
               }}
             >
@@ -106,13 +116,19 @@ export function SiteHeader({ page = "home" }: SiteHeaderProps) {
             className="login-button"
             href={signInUrl}
             onClick={() => {
-              trackLandingEvent("landing_login_clicked", { placement: "mobile_menu" });
+              trackLandingEvent("landing_login_clicked", {
+                placement: "mobile_menu",
+              });
               closeMenu();
             }}
           >
             Log in
           </a>
-          <SignupLink className="button" analyticsSource="mobile_menu" onClick={closeMenu}>
+          <SignupLink
+            className="button"
+            analyticsSource="mobile_menu"
+            onClick={closeMenu}
+          >
             Start with the free plan <ArrowRight size={17} />
           </SignupLink>
         </div>

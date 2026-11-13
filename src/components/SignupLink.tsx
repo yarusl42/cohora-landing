@@ -11,7 +11,8 @@ type SignupLinkProps = Omit<ComponentPropsWithoutRef<"a">, "href"> & {
 };
 
 export function SignupLink(props: SignupLinkProps) {
-  const { analyticsProperties, analyticsSource, onClick, ...anchorProps } = props;
+  const { analyticsProperties, analyticsSource, onClick, ...anchorProps } =
+    props;
   return (
     <a
       {...anchorProps}

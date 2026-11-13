@@ -200,7 +200,7 @@ export default function Home() {
             clear workspace - so your practice feels easier to run.
           </p>
           <div className="hero-actions">
-          <SignupLink className="button" analyticsSource="hero">
+            <SignupLink className="button" analyticsSource="hero">
               Start with the free plan <ArrowRight size={17} />
             </SignupLink>
             <TrackedLandingLink
@@ -352,7 +352,10 @@ export default function Home() {
             <em>more room to breathe.</em>
           </h2>
           <p>Start with a workspace that understands independent tutoring.</p>
-          <SignupLink className="button light-button" analyticsSource="final_cta">
+          <SignupLink
+            className="button light-button"
+            analyticsSource="final_cta"
+          >
             <span>Start with the free plan</span> <ArrowRight size={17} />
           </SignupLink>
         </div>
@@ -384,7 +387,9 @@ export default function Home() {
             <div>
               <span>Account</span>
               <a href={signInUrl}>Sign in</a>
-              <SignupLink analyticsSource="footer">Start with the free plan</SignupLink>
+              <SignupLink analyticsSource="footer">
+                Start with the free plan
+              </SignupLink>
             </div>
           </div>
         </div>
