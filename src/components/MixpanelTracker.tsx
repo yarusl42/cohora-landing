@@ -24,11 +24,6 @@ type AnalyticsDestinations = {
   gtm?: boolean;
 };
 
-type MixpanelResponse = {
-  error?: string;
-  status: number;
-};
-
 const gtmEventNames = new Set([
   "landing_viewed",
   "landing_signup_clicked",
@@ -113,7 +108,7 @@ export const trackLandingEvent = (
   if (!token) {
     return;
   }
-  void fetch(`${apiHost}/track?verbose=1`, {
+  void fetch(`${apiHost}/track`, {
     method: "POST",
     body: new URLSearchParams({
       data: JSON.stringify([
@@ -129,27 +124,13 @@ export const trackLandingEvent = (
       ]),
     }),
     keepalive: true,
-  })
-    .then(async (response) => {
-      const result = (await response.json()) as MixpanelResponse;
-      if (!response.ok || result.status !== 1) {
-        console.error("[Mixpanel] event delivery failed", {
-          event,
-          status: response.status,
-          response: result,
-        });
-      }
-    })
-    .catch((error: unknown) => {
-      console.error("[Mixpanel] event delivery failed", { event, error });
-    });
+  }).catch(() => {});
 };
 
 export default function MixpanelTracker() {
   const pathname = usePathname();
 
   useEffect(() => {
-    console.info("[Mixpanel] token", token);
     if (isMockAnalytics) {
       console.info("[Mixpanel]");
     }
