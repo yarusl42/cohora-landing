@@ -116,13 +116,26 @@ export const trackLandingEvent = (
         properties: {
           token,
           distinct_id: getDistinctId(),
-          time: Date.now(),
+          time: Math.floor(Date.now() / 1000),
           ...properties,
         },
       },
     ]),
     keepalive: true,
-  }).catch(() => {});
+  })
+    .then(async (response) => {
+      const responseBody = await response.text();
+      if (!response.ok || responseBody !== "1") {
+        console.error("[Mixpanel] event delivery failed", {
+          event,
+          status: response.status,
+          response: responseBody,
+        });
+      }
+    })
+    .catch((error: unknown) => {
+      console.error("[Mixpanel] event delivery failed", { event, error });
+    });
 };
 
 export default function MixpanelTracker() {
