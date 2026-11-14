@@ -110,6 +110,9 @@ export const trackLandingEvent = (
   }
   void fetch(`${apiHost}/track`, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify([
       {
         event,
