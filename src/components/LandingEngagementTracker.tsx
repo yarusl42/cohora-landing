@@ -3,7 +3,18 @@
 import { useEffect } from "react";
 import { trackLandingEvent } from "@/components/MixpanelTracker";
 
-const sections = ["top", "how-it-works", "pricing", "faq", "start"];
+const sections = [
+  "top",
+  "features",
+  "teaching",
+  "payments",
+  "student-experience",
+  "how-it-works",
+  "product",
+  "pricing",
+  "faq",
+  "start",
+];
 const scrollDepths = [25, 50, 75, 90];
 
 /** Records first meaningful exposure to landing sections and scroll depth. */

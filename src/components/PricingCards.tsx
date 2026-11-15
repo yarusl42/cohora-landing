@@ -16,11 +16,11 @@ const plans = [
     audience: "For independent tutors starting out.",
     monthlyPrice: 0,
     yearlyPrice: 0,
-    capacity: "Up to 10 student places",
+    capacity: "Up to 25 students · 1 staff",
     features: [
-      "Core CRM and student management",
-      "Lessons, homework, and leads",
-      "Payment requests and income tracking",
+      "Student management and calendar",
+      "Lessons, homework, and payments",
+      "Lesson and income tracking",
     ],
     cta: "Start with Free Tutor",
     primary: true,
@@ -32,11 +32,11 @@ const plans = [
     audience: "For an established solo tutor.",
     monthlyPrice: 12,
     yearlyPrice: 120,
-    capacity: "Up to 50 student places",
+    capacity: "Up to 75 students · 1 staff",
     features: [
       "Everything in Free Tutor",
       "More room for your students",
-      "The same focused solo-tutor experience",
+      "The same tools, ready to grow",
     ],
     cta: "Choose Tutor Pro",
     primary: false,
@@ -46,13 +46,13 @@ const plans = [
     label: "For growing teams",
     name: "Studio",
     audience: "For a small teaching team.",
-    monthlyPrice: 39,
-    yearlyPrice: 390,
-    capacity: "Up to 150 student places · 5 staff",
+    monthlyPrice: 59,
+    yearlyPrice: 590,
+    capacity: "Up to 300 student places · 5 staff",
     features: [
-      "Multi-staff workflows",
-      "Payments and scheduling",
-      "Team permissions",
+      "Students, lessons, payments, and staff",
+      "Up to 5 staff members",
+      "Teaching teams working together",
     ],
     cta: "Choose Studio",
     primary: false,
@@ -62,13 +62,13 @@ const plans = [
     label: "For established schools",
     name: "Academy",
     audience: "For a growing school operation.",
-    monthlyPrice: 99,
-    yearlyPrice: 990,
-    capacity: "Up to 500 student places · 25 staff",
+    monthlyPrice: 129,
+    yearlyPrice: 1290,
+    capacity: "Up to 1,000 student places · 25 staff",
     features: [
-      "Advanced organization structure",
-      "Analytics and financial management",
-      "Multi-team operations",
+      "Multiple teams and centralized management",
+      "Up to 25 staff members",
+      "More complex school operations",
     ],
     cta: "Choose Academy",
     primary: false,
@@ -94,7 +94,7 @@ const plans = [
 ];
 
 export function PricingCards({ showFuturePlans }: PricingCardsProps) {
-  const [interval, setInterval] = useState<"monthly" | "yearly">("yearly");
+  const [interval, setInterval] = useState<"monthly" | "yearly">("monthly");
   const visiblePlans = plans.filter(
     (plan) => plan.visibleNow || showFuturePlans,
   );

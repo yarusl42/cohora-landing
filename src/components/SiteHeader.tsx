@@ -16,11 +16,13 @@ export function SiteHeader({ page = "home" }: SiteHeaderProps) {
   const isHome = page === "home";
   const navItems = isHome
     ? [
+        ["Features", "#features"],
         ["How it works", "#how-it-works"],
         ["Pricing", "/pricing"],
         ["FAQ", "#faq"],
       ]
     : [
+        ["Features", "/#features"],
         ["How it works", "/#how-it-works"],
         ["Pricing", "/pricing"],
         ["FAQ", "/#faq"],
@@ -80,7 +82,7 @@ export function SiteHeader({ page = "home" }: SiteHeaderProps) {
           Log in
         </a>
         <SignupLink className="button button-small" analyticsSource="header">
-          Start with the free plan <ArrowRight size={15} />
+          Start free <ArrowRight size={15} />
         </SignupLink>
       </div>
       <button
@@ -129,7 +131,7 @@ export function SiteHeader({ page = "home" }: SiteHeaderProps) {
             analyticsSource="mobile_menu"
             onClick={closeMenu}
           >
-            Start with the free plan <ArrowRight size={17} />
+            Start free <ArrowRight size={17} />
           </SignupLink>
         </div>
       </div>

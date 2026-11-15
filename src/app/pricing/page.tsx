@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default function PricingPage() {
-  const showFuturePlans = process.env.NODE_ENV === "development";
+  const showFuturePlans = true;
 
   return (
     <main>
@@ -22,8 +22,8 @@ export default function PricingPage() {
         <p className="eyebrow">Simple pricing for solo tutors</p>
         <h1>Start where you are. Keep teaching.</h1>
         <p>
-          Choose the capacity that fits your practice today. Both plans keep the
-          work clear and focused.
+          Choose the capacity that fits your practice today. Each plan keeps the
+          tools you know as your tutoring business grows.
         </p>
       </section>
 
