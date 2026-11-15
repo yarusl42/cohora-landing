@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default function PricingPage() {
-  const showFuturePlans = true;
+  const showFuturePlans = process.env.NODE_ENV !== "production";
 
   return (
     <main>
@@ -36,16 +36,18 @@ export default function PricingPage() {
           next renewal; you&apos;ll retain access through your current paid
           billing period. See our <a href="/refunds">Refund Policy</a>.
         </p>
-        <p className="enterprise-line">
-          Growing beyond a solo practice?{" "}
-          <TrackedLandingLink
-            eventName="sales_contacted"
-            eventProperties={{ source: "pricing_page" }}
-            href="mailto:sales@cohora.org"
-          >
-            Talk to us.
-          </TrackedLandingLink>
-        </p>
+        {showFuturePlans ? (
+          <p className="enterprise-line">
+            Growing beyond a solo practice?{" "}
+            <TrackedLandingLink
+              eventName="sales_contacted"
+              eventProperties={{ source: "pricing_page" }}
+              href="mailto:sales@cohora.org"
+            >
+              Talk to us.
+            </TrackedLandingLink>
+          </p>
+        ) : null}
       </section>
 
       <section className="final-cta" id="start">

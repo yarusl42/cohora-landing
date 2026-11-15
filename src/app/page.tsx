@@ -401,7 +401,7 @@ function StudentPortalVisual() {
 }
 
 export default function Home() {
-  const showFuturePlans = true;
+  const showFuturePlans = process.env.NODE_ENV !== "production";
 
   return (
     <main>
